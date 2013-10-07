@@ -1,0 +1,22 @@
+{
+    "name": "jamwaffles/pliers",
+    "type": "library",
+    "description": "SlimPHP extensions",
+    "keywords": [ "slimphp" ],
+    "homepage": "http://github.com/jamwaffles/Pliers",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Waples",
+            "email": "jamwaffles@gmail.com",
+            "homepage": "http://www.jamwaffles.co.uk/"
+        }
+    ],
+    "require": {
+        "slim/slim": "~2.3",
+        "gabordemooij/redbean": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Pliers": "." }
+    }
+}
