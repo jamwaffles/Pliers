@@ -1,5 +1,5 @@
 <?php
-namespace Imgurian;
+namespace Pliers;
 
 class App extends \Slim\Slim {
 	public function __construct() {
@@ -7,7 +7,7 @@ class App extends \Slim\Slim {
 			'templates.path' => realpath('../views')
 		));
 
-		$this->router = new \Imgurian\Router;
+		$this->router = new \Pliers\Router;
 
 		$this->add(new \Slim\Middleware\SessionCookie(array(
 			'expires' => '2 weeks',
@@ -15,7 +15,7 @@ class App extends \Slim\Slim {
 			'domain' => null,
 			'secure' => true,
 			'httponly' => false,
-			'name' => 'imgurian_session',
+			'name' => 'Pliers_session',
 			'secret' => 'magic_unicorns',
 			'cipher' => MCRYPT_RIJNDAEL_256,
 			'cipher_mode' => MCRYPT_MODE_CBC

@@ -1,7 +1,7 @@
 <?php
-namespace Imgurian;
+namespace Pliers;
 
-class Controller extends \Imgurian\App {
+class Controller extends \Pliers\App {
 	protected $templateData;
 
 	public function render($name, $data = array(), $status = null) {

@@ -1,5 +1,5 @@
 <?php
-namespace Imgurian;
+namespace Pliers;
 
 class Asset extends \Slim\Slim {
 	protected static $assetBase = '/assets';

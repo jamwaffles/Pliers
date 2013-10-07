@@ -1,7 +1,7 @@
 <?php
-namespace Imgurian;
+namespace Pliers;
 
-Class TemplateController extends \Imgurian\Controller {
+Class TemplateController extends \Pliers\Controller {
 	protected $template = 'default';
 
 	protected $templateData;

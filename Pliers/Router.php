@@ -1,5 +1,5 @@
 <?php
-namespace Imgurian;
+namespace Pliers;
 
 class Router extends \Slim\Router {
 	public function __construct() {
