@@ -5,6 +5,7 @@
     "keywords": [ "slimphp" ],
     "homepage": "http://github.com/jamwaffles/Pliers",
     "version": "0.0.1",
+    "license": "MIT",
     "authors": [
         {
             "name": "James Waples",
