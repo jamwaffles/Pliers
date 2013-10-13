@@ -103,12 +103,16 @@ class App extends \Slim\Slim {
 	protected function processCallback($path) {
 		$class = "Main";
 
-		if(strpos($path, ":") !== false) {
-			list($class, $path) = explode(":", $path);
+		$params = explode(":", $path);
+
+		if(count($params) > 1) {
+			list($class, $path) = $params;
+		} else {
+			$class = $params[0];
+			$path = 'index';
 		}
 
 		$class = ucfirst($class);
-
 		$function = ($path != "") ? $path : "index";
 
 		$func = function() use($class, $function) {
