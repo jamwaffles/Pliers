@@ -65,7 +65,7 @@ class App extends \Slim\Slim {
 
 			$app->halt(500);
 		}
-		
+
 		$this->conf = $conf->$mode;
 	}
 
@@ -94,9 +94,7 @@ class App extends \Slim\Slim {
 		$r->setHttpMethods(strtoupper($method));
 
 		if($name !== null) {
-			$r->setName($name);
-
-			$this->router->addNamedRoute($name, $r);
+			$this->$method($route, $func)->name($name);
 		} else {
 			$this->$method($route, $func);
 		}
@@ -113,7 +111,7 @@ class App extends \Slim\Slim {
 
 		$function = ($path != "") ? $path : "index";
 
-		$func = function () use ($class, $function) {
+		$func = function() use($class, $function) {
 			$classPath = '\Controller\\' . $class;
 			$instance = new $classPath();
 
