@@ -16,9 +16,10 @@ class Router extends \Slim\Router {
 		foreach($routes as $route => $path) {
 			if(is_string($route)) {
 				if(is_array($path)) {
-					foreach($path as $method => $action) {
-						$this->addRoute($route, $action . "@" . $method);
-					}
+					$this->addRoute($route, $path[1], $path[0]);
+					// foreach($path as $method => $action) {
+					// 	$this->addRoute($route, $action . "@" . $method);
+					// }
 				} else {
 					$this->addRoute($route, $path);
 				}
@@ -29,7 +30,7 @@ class Router extends \Slim\Router {
 		}
 	}
 
-	protected function addRoute($route, $pathStr) {
+	protected function addRoute($route, $pathStr, $name = null) {
 		$method = "any";
 
 		if(strpos($pathStr, "@") !== false) {
@@ -38,8 +39,17 @@ class Router extends \Slim\Router {
 
 		$func = $this->processCallback($pathStr);
 
+		if(is_array($route)) {
+			$name = $route[0];
+			$route = $route[1];
+		}
+
 		$r = new \Slim\Route($route, $func);
 		$r->setHttpMethods(strtoupper($method));
+
+		if($name !== null) {
+			$r->setName($name);
+		}
 
 		$this->map($r);
 	}
