@@ -74,9 +74,6 @@ class App extends \Slim\Slim {
 			if(is_string($route)) {
 				if(is_array($path)) {
 					$this->addRoute($route, $path[1], $path[0]);
-					// foreach($path as $method => $action) {
-					// 	$this->addRoute($route, $action . "@" . $method);
-					// }
 				} else {
 					$this->addRoute($route, $path);
 				}
@@ -120,7 +117,7 @@ class App extends \Slim\Slim {
 			$classPath = '\Controller\\' . $class;
 			$instance = new $classPath();
 
-			return call_user_func_array(array($instance, $function), array($class, $function));
+			return $instance->$function();
 		};
 
 		return $func;
