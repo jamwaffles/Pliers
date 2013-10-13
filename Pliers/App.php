@@ -90,9 +90,6 @@ class App extends \Slim\Slim {
 
 		$func = $this->processCallback($pathStr);
 
-		$r = new \Slim\Route($route, $func);
-		$r->setHttpMethods(strtoupper($method));
-
 		if($name !== null) {
 			$this->$method($route, $func)->name($name);
 		} else {
