@@ -9,11 +9,7 @@ class Controller extends \Pliers\App {
 			$name = $name . ".php";
 		}
 
-		$data['app'] = $this;
-
-		$app = \Slim\Slim::getInstance();
-
-		$app->render($name, $data, $status);
+		parent::render($name, $data, $status);
 	}	
 }
 ?>
