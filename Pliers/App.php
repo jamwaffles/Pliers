@@ -117,7 +117,7 @@ class App extends \Slim\Slim {
 			$classPath = '\Controller\\' . $class;
 			$instance = new $classPath();
 
-			return $instance->$function();
+			return call_user_func_array(array($instance, $function), func_get_args());
 		};
 
 		return $func;
