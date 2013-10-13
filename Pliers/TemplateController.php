@@ -12,13 +12,17 @@ Class TemplateController extends \Pliers\Controller {
 		$this->templateData = new \StdClass;
 	}
 
-	public function render($name, $data = array(), $status = null) {
+	public function render($name = null, $data = array(), $status = null) {
 		$contentView = new \Slim\View;
 		
 		$contentView->setTemplatesDirectory($this->config('templates.path'));
 		$contentView->appendData($data);
 
-		$this->templateData->content = $contentView->fetch($name);
+		if($name !== null) {
+			$this->templateData->content = $contentView->fetch($name);
+		} else {
+			$this->templateData->content = '';
+		}
 
 		parent::render('template_' . $this->template, (array)$this->templateData, $status);
 	}	
