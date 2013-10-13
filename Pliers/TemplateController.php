@@ -29,7 +29,7 @@ Class TemplateController extends \Pliers\Controller {
 			$this->templateData->content = '';
 		}
 
-		parent::render('template_' . $this->template, (array)$this->templateData, $status);
+		parent::render('template-' . $this->template, (array)$this->templateData, $status);
 	}	
 }
 ?>
