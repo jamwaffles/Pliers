@@ -20,16 +20,16 @@ Class TemplateController extends \Pliers\Controller {
 		    $this->templateData->flash = $this->environment['slim.flash'];
 		}
 		
-		$contentView->setTemplatesDirectory($this->config('templates.path'));
+		$contentView->setTemplatesDirectory($this->appRoot() . '/views');
 		$contentView->appendData($data);
 
 		if($name !== null) {
-			$this->templateData->content = $contentView->fetch($name);
+			$this->templateData->content = $contentView->fetch(rtrim($name, '.php') . '.php');
 		} else {
 			$this->templateData->content = '';
 		}
 
-		parent::render('template-' . $this->template, (array)$this->templateData, $status);
+		$this->app->render('template-' . rtrim($this->template, '.php') . '.php', (array)$this->templateData, $status);
 	}	
 }
 ?>

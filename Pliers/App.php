@@ -3,15 +3,15 @@ namespace Pliers;
 
 use RedBean_Facade as R;
 
-class App extends \Slim\Slim {
+class App {
 	protected $conf;
+	protected $app;
 
 	private static $initialRoutes;
 
 	public function __construct($routes = null) {
-		parent::__construct(array(
-			'templates.path' => realpath('../views')
-		));
+		$this->app = \Slim\Slim::getInstance();
+		$this->app->config('templates.path', $this->appRoot() . '/views');
 
 		$this->setupConfig();
 
@@ -25,7 +25,7 @@ class App extends \Slim\Slim {
 		R::setup($this->conf->db->dsn, $this->conf->db->username, $this->conf->db->password);
 		R::freeze(true);		// Don't allow modifications to the DB schema
 
-		$this->add(new \Slim\Middleware\SessionCookie(array(
+		$this->app->add(new \Slim\Middleware\SessionCookie(array(
 			'expires' => '2 weeks',
 			'path' => '/',
 			'domain' => null,
@@ -38,12 +38,12 @@ class App extends \Slim\Slim {
 		)));
 	}
 
-	protected function appRoot() {
-		return realpath($this->root() . '../');
+	public function start() {
+		$this->app->run();
 	}
 
-	public function mode() {
-		return $this->mode;
+	protected function appRoot() {
+		return realpath($this->app->root() . '../');
 	}
 
 	private function setupConfig() {
@@ -57,7 +57,7 @@ class App extends \Slim\Slim {
 			$app->halt(500);
 		}
 
-		$mode = $this->getMode();
+		$mode = $this->app->getMode();
 		$conf = json_decode($file);
 
 		if(!$conf->$mode) {
@@ -91,9 +91,9 @@ class App extends \Slim\Slim {
 		$func = $this->processCallback($pathStr);
 
 		if($name !== null) {
-			$this->$method($route, $func)->name($name);
+			$this->app->$method($route, $func)->name($name);
 		} else {
-			$this->$method($route, $func);
+			$this->app->$method($route, $func);
 		}
 	}
 
