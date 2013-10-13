@@ -6,18 +6,24 @@ use RedBean_Facade as R;
 class App extends \Slim\Slim {
 	protected $conf;
 
-	public function __construct() {
+	private static $initialRoutes;
+
+	public function __construct($routes = null) {
 		parent::__construct(array(
 			'templates.path' => realpath('../views')
 		));
 
 		$this->setupConfig();
 
+		if($routes !== null) {
+			self::$initialRoutes = $routes;
+		}
+
+		$this->addRoutes();
+
 		// Set up RedBean
 		R::setup($this->conf->db->dsn, $this->conf->db->username, $this->conf->db->password);
 		R::freeze(true);		// Don't allow modifications to the DB schema
-
-		$this->router = new \Pliers\Router;
 
 		$this->add(new \Slim\Middleware\SessionCookie(array(
 			'expires' => '2 weeks',
@@ -34,10 +40,6 @@ class App extends \Slim\Slim {
 
 	protected function appRoot() {
 		return realpath($this->root() . '../');
-	}
-
-	public function start() {
-		$this->router->start();
 	}
 
 	public function mode() {
@@ -65,6 +67,63 @@ class App extends \Slim\Slim {
 		}
 		
 		$this->conf = $conf->$mode;
+	}
+
+	private function addRoutes() {
+		foreach(self::$initialRoutes as $route => $path) {
+			if(is_string($route)) {
+				if(is_array($path)) {
+					$this->addRoute($route, $path[1], $path[0]);
+					// foreach($path as $method => $action) {
+					// 	$this->addRoute($route, $action . "@" . $method);
+					// }
+				} else {
+					$this->addRoute($route, $path);
+				}
+			}
+		}
+	}
+
+	protected function addRoute($route, $pathStr, $name = null) {
+		$method = "any";
+
+		if(strpos($pathStr, "@") !== false) {
+			list($pathStr, $method) = explode("@", $pathStr);
+		}
+
+		$func = $this->processCallback($pathStr);
+
+		$r = new \Slim\Route($route, $func);
+		$r->setHttpMethods(strtoupper($method));
+
+		if($name !== null) {
+			$r->setName($name);
+
+			$this->router->addNamedRoute($name, $r);
+		} else {
+			$this->$method($route, $func);
+		}
+	}
+
+	protected function processCallback($path) {
+		$class = "Main";
+
+		if(strpos($path, ":") !== false) {
+			list($class, $path) = explode(":", $path);
+		}
+
+		$class = ucfirst($class);
+
+		$function = ($path != "") ? $path : "index";
+
+		$func = function () use ($class, $function) {
+			$classPath = '\Controller\\' . $class;
+			$instance = new $classPath();
+
+			return call_user_func_array(array($instance, $function), array($class, $function));
+		};
+
+		return $func;
 	}
 }
 ?>
