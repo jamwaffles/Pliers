@@ -3,39 +3,40 @@ namespace Pliers;
 
 use RedBean_Facade as R;
 
-class App {
+class App extends \Slim\Slim {
 	protected $conf;
 	protected $app;
 
 	private static $initialRoutes;
-	private static $appStatic;
 
-	public function __construct($routes = null, $app = null) {
-		if($app !== null) {
-			self::$appStatic = $app;
-		}
+	public function __construct($routes = null) {
+		@session_start();
 
-		$this->app = self::$appStatic;
-
-		$this->setupConfig();
+		parent::__construct(array(
+			'templates.path' => realpath('../views')
+		));
 
 		if($routes !== null) {
 			self::$initialRoutes = $routes;
 		}
 
+		$this->addRoutes();
+
+		$this->setupConfig();
+
 		// Set up RedBean
 		R::setup($this->conf->db->dsn, $this->conf->db->username, $this->conf->db->password);
 		R::freeze(true);		// Don't allow modifications to the DB schema
+
+		$this->app = self::getInstance();
 	}
 
 	public function start() {
-		$this->addRoutes();
-		
-		self::$appStatic->run();
+		$this->run();
 	}
 
 	protected function appRoot() {
-		return realpath($this->app->root() . '../');
+		return realpath($this->root() . '../');
 	}
 
 	private function setupConfig() {
@@ -49,7 +50,7 @@ class App {
 			$app->halt(500);
 		}
 
-		$mode = $this->app->getMode();
+		$mode = $this->getMode();
 		$conf = json_decode($file);
 
 		if(!$conf->$mode) {
@@ -83,9 +84,9 @@ class App {
 		$func = $this->processCallback($pathStr);
 
 		if($name !== null) {
-			$this->app->$method($route, $func)->name($name);
+			$this->$method($route, $func)->name($name);
 		} else {
-			$this->app->$method($route, $func);
+			$this->$method($route, $func);
 		}
 	}
 

@@ -9,7 +9,7 @@ class Controller extends \Pliers\App {
 			$name = $name . ".php";
 		}
 
-		$this->app->render($name, $data, $status);
+		parent::render($name, $data, $status);
 	}	
 }
 ?>
