@@ -3,8 +3,8 @@ namespace Pliers;
 
 Class TemplateController extends \Pliers\Controller {
 	protected $template = 'default';
-
 	protected $templateData;
+	protected $beforeRenderCalled = false;
 
 	public function __construct() {
 		parent::__construct();
@@ -30,7 +30,7 @@ Class TemplateController extends \Pliers\Controller {
 		}
 
 		// Call before render
-		if(method_exists($this, 'beforeRender')) {
+		if(method_exists($this, 'beforeRender') && !$this->beforeRenderCalled) {
 			$this->beforeRender();
 		}
 
