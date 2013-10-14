@@ -8,10 +8,14 @@ class App {
 	protected $app;
 
 	private static $initialRoutes;
+	private static $appStatic;
 
-	public function __construct($routes = null) {
-		$this->app = \Slim\Slim::getInstance();
-		$this->app->config('templates.path', $this->appRoot() . '/views');
+	public function __construct($routes = null, $app = null) {
+		if($app !== null) {
+			self::$appStatic = $app;
+		}
+
+		$this->app = self::$appStatic;
 
 		$this->setupConfig();
 
@@ -22,24 +26,12 @@ class App {
 		// Set up RedBean
 		R::setup($this->conf->db->dsn, $this->conf->db->username, $this->conf->db->password);
 		R::freeze(true);		// Don't allow modifications to the DB schema
-
-		$this->app->add(new \Slim\Middleware\SessionCookie(array(
-			'expires' => '2 weeks',
-			'path' => '/',
-			'domain' => null,
-			'secure' => true,
-			'httponly' => false,
-			'name' => 'Pliers_session',
-			'secret' => 'magic_unicorns',
-			'cipher' => MCRYPT_RIJNDAEL_256,
-			'cipher_mode' => MCRYPT_MODE_CBC
-		)));
 	}
 
 	public function start() {
 		$this->addRoutes();
 		
-		$this->app->run();
+		self::$appStatic->run();
 	}
 
 	protected function appRoot() {
