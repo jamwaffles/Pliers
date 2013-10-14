@@ -29,6 +29,11 @@ Class TemplateController extends \Pliers\Controller {
 			$this->templateData->content = '';
 		}
 
+		// Call before render
+		if(method_exists($this, 'beforeRender')) {
+			$this->beforeRender();
+		}
+
 		parent::render('template-' . rtrim($this->template, '.php') . '.php', (array)$this->templateData, $status);
 	}	
 }
