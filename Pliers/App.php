@@ -114,5 +114,10 @@ class App extends \Slim\Slim {
 
 		return $func;
 	}
+
+	// Redirect back to previous URL
+	protected function redirectBack() {
+		$this->app->redirect($this->app->request->getReferrer());
+	}
 }
 ?>
