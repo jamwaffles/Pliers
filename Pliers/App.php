@@ -31,6 +31,14 @@ class App extends \Slim\Slim {
 		$this->app = self::getInstance();
 	}
 
+	protected function log($message, $type = E_USER_NOTICE) {
+		$typeMap = array('error' => E_USER_ERROR, 'warning' => E_USER_WARNING, 'notice' => E_USER_NOTICE);
+
+		error_log($message, $typeMap[$type]);
+
+		return $this;
+	}
+
 	public function start() {
 		$this->run();
 	}
