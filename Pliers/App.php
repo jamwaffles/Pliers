@@ -6,6 +6,7 @@ use RedBean_Facade as R;
 class App extends \Slim\Slim {
 	protected $conf;
 	protected $app;
+	protected $utils;
 
 	private static $initialRoutes;
 
@@ -29,6 +30,8 @@ class App extends \Slim\Slim {
 		R::freeze(true);		// Don't allow modifications to the DB schema
 
 		$this->app = self::getInstance();
+
+		$this->utils = new Utils;
 	}
 
 	protected function log($message, $type = E_USER_NOTICE) {
