@@ -5,7 +5,7 @@ class Asset extends \Slim\Slim {
 	protected static $assetBase = '/assets';
 
 	protected static function getRoot() {
-		return \Slim\Slim::getInstance()->root();
+		return rtrim(\Slim\Slim::getInstance()->appRoot(), '/');
 	}
 
 	protected static function attributeString($arr) {
@@ -34,7 +34,7 @@ class Asset extends \Slim\Slim {
 			$content = '';
 			$attributes['src'] = $path;
 		} else {
-			$file = self::getRoot() . '/' . self::$assetBase . '/js/' . ltrim($path, '/');
+			$file = self::getRoot() . '/public/' . ltrim(self::$assetBase, '/') . '/js/' . ltrim($path, '/');
 
 			$content = file_get_contents($file);
 		}

@@ -47,7 +47,7 @@ class App extends \Slim\Slim {
 		$this->run();
 	}
 
-	protected function appRoot() {
+	public function appRoot() {
 		return realpath(__DIR__ . '/../../../../');
 	}
 
