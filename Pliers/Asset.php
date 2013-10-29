@@ -49,7 +49,7 @@ class Asset extends \Slim\Slim {
 
 	// Generate a link for use with an <a> tag
 	public static function href($path) {
-		$path = '/' . (isset($_SERVER['OE2_BASE']) ? trim($_SERVER['OE2_BASE'], '/') : '') . rtrim($path, '/');
+		$path = '/' . (isset($_SERVER['PLIERS_BASE']) ? trim($_SERVER['PLIERS_BASE'], '/') : '') . rtrim($path, '/');
 
 		return str_replace('//', '/', $path);
 	}
