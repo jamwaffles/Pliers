@@ -5,7 +5,7 @@ class Asset extends \Slim\Slim {
 	protected static $assetBase = '/assets';
 
 	protected static function getRoot() {
-		return \Slim\Slim::getInstance()->root();
+		return \Slim\Slim::getInstance()->appRoot();
 	}
 
 	protected static function attributeString($arr) {
@@ -18,9 +18,15 @@ class Asset extends \Slim\Slim {
 		return rtrim($str);
 	}
 
+	protected static function assetBaseUri() {
+		$url = parse_url($_SERVER['REQUEST_URI']);
+
+		return rtrim($url['path'], '/') . self::$assetBase;
+	}
+
 	public static function css($path, $inline = false) {
 		if(!$inline) {
-			$path = self::$assetBase . '/css/' . ltrim($path, '/');
+			$path = self::assetBaseUri() . '/css/' . ltrim($path, '/');
 
 			return '<link rel="stylesheet" href="' . $path . '">';
 		} else {
