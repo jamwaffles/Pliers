@@ -46,5 +46,12 @@ class Asset extends \Slim\Slim {
 	public static function image($path) {
 
 	}
+
+	// Generate a link for use with an <a> tag
+	public static function href($path) {
+		$path = '/' . (isset($_SERVER['OE2_BASE']) ? trim($_SERVER['OE2_BASE'], '/') : '') . rtrim($path, '/');
+
+		return str_replace('//', '/', $path);
+	}
 }
 ?>
