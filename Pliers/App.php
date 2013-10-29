@@ -4,6 +4,7 @@ namespace Pliers;
 use RedBean_Facade as R;
 
 class App extends \Slim\Slim {
+	private static $staticConf = null;
 	protected $conf;
 	protected $app;
 	protected $utils;
@@ -47,10 +48,16 @@ class App extends \Slim\Slim {
 	}
 
 	protected function appRoot() {
-		return realpath($this->root() . '../');
+		return realpath(__DIR__ . '/../../../../');
 	}
 
 	private function setupConfig() {
+		if(self::$staticConf !== null) {
+			$this->conf = self::$staticConf;
+
+			return $this;
+		}
+
 		$confFile = $this->appRoot() . '/config.json';
 
 		$file = file_get_contents($confFile);
@@ -70,7 +77,11 @@ class App extends \Slim\Slim {
 			$app->halt(500);
 		}
 
-		$this->conf = $conf->$mode;
+		self::$staticConf = $conf->$mode;
+
+		$this->conf = self::$staticConf;
+
+		return $this;
 	}
 
 	private function addRoutes() {
