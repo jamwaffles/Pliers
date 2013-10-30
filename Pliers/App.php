@@ -15,7 +15,8 @@ class App extends \Slim\Slim {
 		@session_start();
 
 		parent::__construct(array(
-			'templates.path' => realpath('../views')
+			'templates.path' => realpath('../views'),
+			'mode' => isset($_SERVER['PLIERS_ENV']) ? $_SERVER['PLIERS_ENV'] : 'development'
 		));
 
 		if($routes !== null) {
