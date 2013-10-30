@@ -142,5 +142,9 @@ class App extends \Slim\Slim {
 	protected function redirectBack() {
 		$this->app->redirect($this->app->request->getReferrer());
 	}
+
+	public function addMiddleware($mid) {
+		$this->app->add($mid);
+	}
 }
 ?>
