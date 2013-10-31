@@ -12,8 +12,6 @@ class App extends \Slim\Slim {
 	private static $initialRoutes;
 
 	public function __construct($routes = null) {
-		@session_start();
-
 		parent::__construct(array(
 			'templates.path' => realpath('../views'),
 			'mode' => isset($_SERVER['PLIERS_ENV']) ? $_SERVER['PLIERS_ENV'] : 'development'
@@ -32,6 +30,18 @@ class App extends \Slim\Slim {
 		R::freeze(true);		// Don't allow modifications to the DB schema
 
 		$this->app = self::getInstance();
+
+		$this->app->add(new \Slim\Middleware\SessionCookie(array(
+		    'expires' => $this->conf->session->expires,
+		    'path' => '/',
+		    'domain' => null,
+		    'secure' => false,
+		    'httponly' => false,
+		    'name' => 'pliers_session',
+		    'secret' => $this->conf->session->secret,
+		    'cipher' => MCRYPT_RIJNDAEL_256,
+		    'cipher_mode' => MCRYPT_MODE_CBC
+		)));
 
 		$this->utils = new Utils;
 	}
