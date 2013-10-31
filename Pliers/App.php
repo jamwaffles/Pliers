@@ -36,7 +36,7 @@ class App extends \Slim\Slim {
 		$this->utils = new Utils;
 	}
 
-	protected function log($message, $type = E_USER_NOTICE) {
+	protected function log($message, $type = 'notice') {
 		$typeMap = array('error' => E_USER_ERROR, 'warning' => E_USER_WARNING, 'notice' => E_USER_NOTICE);
 
 		error_log($message, $typeMap[$type]);
