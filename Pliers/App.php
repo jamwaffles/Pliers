@@ -27,7 +27,6 @@ class App extends \Slim\Slim {
 
 		// Set up RedBean
 		R::setup($this->conf->db->dsn, $this->conf->db->username, $this->conf->db->password);
-		R::freeze(true);		// Don't allow modifications to the DB schema
 
 		$this->app = self::getInstance();
 
