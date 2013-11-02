@@ -30,18 +30,6 @@ class App extends \Slim\Slim {
 
 		$this->app = self::getInstance();
 
-		$this->app->add(new \Slim\Middleware\SessionCookie(array(
-		    'expires' => $this->conf->session->expires,
-		    'path' => '/',
-		    'domain' => null,
-		    'secure' => false,
-		    'httponly' => false,
-		    'name' => 'pliers_session',
-		    'secret' => $this->conf->session->secret,
-		    'cipher' => MCRYPT_RIJNDAEL_256,
-		    'cipher_mode' => MCRYPT_MODE_CBC
-		)));
-
 		$this->utils = new Utils;
 	}
 
