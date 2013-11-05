@@ -15,6 +15,8 @@ Class TemplateController extends \Pliers\Controller {
 	public function render($name = null, $data = array(), $status = null) {
 		$contentView = new \Slim\View;
 
+		$data = array_merge($data, (array)$this->templateData);
+
 		if(isset($this->environment['slim.flash'])) {
 			$contentView->setData('flash', $this->environment['slim.flash']);
 			$this->templateData->flash = $this->environment['slim.flash'];
