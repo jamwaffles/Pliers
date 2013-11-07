@@ -21,6 +21,7 @@ Class TemplateController extends \Pliers\Controller {
 		}
 
 		$contentView->setTemplatesDirectory($this->appRoot() . '/views');
+		$contentView->appendData((array)$this->templateData);
 		$contentView->appendData($data);
 
 		if($name !== null) {
