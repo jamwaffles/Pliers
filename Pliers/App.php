@@ -143,5 +143,9 @@ class App extends \Slim\Slim {
 	public function addMiddleware($mid) {
 		$this->app->add($mid);
 	}
+
+	public function environ() {
+		return $this->getMode();
+	}
 }
 ?>
