@@ -44,7 +44,9 @@ class Asset extends \Slim\Slim {
 
 	// Image path generator. Doesn't generate the tag. Can be used with a CDN in the future
 	public static function image($path) {
+		$path = '/' . (isset($_SERVER['PLIERS_BASE']) ? trim($_SERVER['PLIERS_BASE'], '/') : '') . '/assets/images/' . trim($path, '/');
 
+		return str_replace('//', '/', $path);
 	}
 
 	// Generate a link for use with an <a> tag
