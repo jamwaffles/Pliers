@@ -36,6 +36,8 @@ class App extends \Slim\Slim {
 	protected function log($message, $type = 'notice', $exception = null) {
 		$typeMap = array('error' => E_USER_ERROR, 'warning' => E_USER_WARNING, 'notice' => E_USER_NOTICE);
 
+		file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/../error.log', $message . $exception, FILE_APPEND);
+
 		error_log($message, $typeMap[$type]);
 
 		if(extension_loaded('newrelic')) {
