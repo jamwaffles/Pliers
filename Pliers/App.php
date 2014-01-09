@@ -12,10 +12,18 @@ class App extends \Slim\Slim {
 	private static $initialRoutes;
 
 	public function __construct($routes = null) {
-		parent::__construct(array(
+		$appConfig = array(
 			'templates.path' => realpath('../views'),
 			'mode' => isset($_SERVER['PLIERS_ENV']) ? $_SERVER['PLIERS_ENV'] : 'development'
-		));
+		);
+
+		if($appConfig['mode'] === 'development') {
+			$appConfig['debug'] = true;
+		} else {
+			$appConfig['debug'] = false;
+		}
+
+		parent::__construct($appConfig);
 
 		if($routes !== null) {
 			self::$initialRoutes = $routes;
