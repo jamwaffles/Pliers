@@ -81,7 +81,7 @@ class App extends \Slim\Slim {
 		}
 
 		$mode = $this->getMode();
-		$conf = json_decode($file);
+		$conf = \json_decode($file);
 
 		if(!$conf->$mode) {
 			throw new \Slim\Exception\Stop('No configuration found for mode ' . $mode . '. Check your configuration.');
